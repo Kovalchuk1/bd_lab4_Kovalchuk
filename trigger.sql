@@ -1,62 +1,29 @@
 --ТРИГЕР
---Тригер, який при додаванні нового рядка в таблицю channel додає 50 переглядів до заданого ch_views
+--Тригер, який при додаванні нового рядка в таблицю views додає 50 переглядів до заданого id_views
 --(за стастикою за час довання рядка переглядів збільшується на 50)
 
-DROP TRIGGER IF EXISTS update_channel ON channel;
+
+DROP TRIGGER IF EXISTS updaten_viewss ON viewss;
 
 --Тригерна функція
-CREATE OR REPLACE FUNCTION update_channel_n() RETURNS trigger 
-LANGUAGE 'plpgsql'
+CREATE OR REPLACE FUNCTION update_viewss() RETURNS trigger 
+LANGUAGE plpgsql
 AS
 $$
      BEGIN
-          UPDATE сhannel 
-          SET ch_views = ch_views + 50 
- 		  WHERE сhannel.ch_name = NEW.ch_name; 
-		  RETURN NULL; -- результат ігнорується, оскільки це AFTER trigger
+          UPDATE viewss
+		  SET views_v = views_v + 50 
+ 		  WHERE viewss.id_views = NEW.id_views; 
+		  RETURN NULL;
      END;
 $$;
 
 
-CREATE TRIGGER update_channel
-AFTER INSERT ON channel
-FOR EACH ROW EXECUTE FUNCTION update_channel_n()
+CREATE TRIGGER updaten_viewss
+AFTER INSERT ON viewss
+FOR EACH ROW EXECUTE FUNCTION update_viewss();
 
 --ТЕСТ
-INSERT INTO channel(ch_name, ch_views,  ch_subscribers, id_genre, id_country) VALUES ('Zee ВВ', 61601, 1767, 3, 1);
+INSERT INTO viewss(id_views, views_v, date_first, date_last) VALUES (51,3453,'2022-09-01', '2022-10-01');
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+select * from  viewss
